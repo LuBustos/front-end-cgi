@@ -1,0 +1,7 @@
+.box {
+  height: 227px;
+  background: #f7f7f7 0% 0% no-repeat padding-box;
+  border: 1px solid #cccccc;
+  opacity: 1;
+  padding: 11px;
+}
