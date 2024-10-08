@@ -70,10 +70,43 @@ describe("Card components", () => {
     );
   });
 
-  it("undoes the last delete action", () => {
+  it("should undo the last delete action", () => {
     fireEvent.click(screen.getByText("Item 1"));
     fireEvent.click(screen.getByTestId("delete-button"));
     fireEvent.click(screen.getByTestId("undo-button"));
     expect(screen.getByText("Item 1")).toBeInTheDocument();
+  });
+
+  it("should remove an item on double-click", () => {
+    fireEvent.doubleClick(screen.getByText("Item 1"));
+    expect(screen.queryByText("Item 1")).not.toBeInTheDocument();
+  });
+
+  it("should select multiple items and remove them", () => {
+    fireEvent.click(screen.getByText("Item 1"));
+    fireEvent.click(screen.getByText("Item 2"));
+    fireEvent.click(screen.getByTestId("delete-button"));
+    expect(screen.queryByText("Item 1")).not.toBeInTheDocument();
+    expect(screen.queryByText("Item 2")).not.toBeInTheDocument();
+  });
+
+  test("should undo the last add action", () => {
+    fireEvent.click(screen.getByTestId("add-button-card"));
+    fireEvent.change(screen.getByPlaceholderText(/Type the text here.../i), {
+      target: { value: "Undo Test" },
+    });
+    fireEvent.click(screen.getByTestId("add-button"));
+    expect(screen.getByText("Undo Test")).toBeInTheDocument();
+    fireEvent.click(screen.getByTestId("undo-button"));
+    expect(screen.queryByText("Undo Test")).not.toBeInTheDocument();
+  });
+
+  test("should select an item and select on it again and try to remove it", () => {
+    fireEvent.click(screen.getByText("Item 1"));
+    fireEvent.click(screen.getByText("Item 1"));
+    fireEvent.click(screen.getByTestId("delete-button"));
+    expect(window.alert).toHaveBeenCalledWith(
+      "Please select at least one item"
+    );
   });
 });

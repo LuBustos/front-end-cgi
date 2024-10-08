@@ -8,7 +8,7 @@ import InputField from "../input/input";
 
 const Card = ({ defaultValues = [] }) => {
   const [itemList, setItemList] = useState(defaultValues);
-  const [openModal, setOpenModal] = useState(true);
+  const [openModal, setOpenModal] = useState(false);
   const [value, setValue] = useState(null);
   const [selectedItems, setSelectedItems] = useState([]);
   const [undoAction, setUndoAction] = useState([]);
@@ -80,9 +80,7 @@ const Card = ({ defaultValues = [] }) => {
   };
 
   const handleUndoAction = () => {
-    console.log("undo", undoAction);
     const lastElement = undoAction.pop();
-    console.log(lastElement);
 
     if (lastElement) {
       if (lastElement.state === "ADD") {
