@@ -1,37 +1,47 @@
 import "./button.css";
 
-const Add = () => {
+export const PrimaryButton = ({ label = "Add", ...props }) => {
   return (
-    <button data-testid="primary-button" className="btn primary">
-      Add
+    <button className="btn primary" {...props}>
+      {label}
     </button>
   );
 };
 
-const Delete = () => {
+export const SecondaryButton = ({ label = "Delete", ...props }) => {
   return (
-    <button data-testid="secondary-button" className="btn secondary">
-      Delete
+    <button className="btn secondary" {...props}>
+      {label}
     </button>
   );
 };
 
-const Undo = () => {
+const Undo = ({ ...props }) => {
   return (
-    <button data-testid="undo-button" className="btn undo">
+    <button className="btn undo" {...props}>
       Undo
     </button>
   );
 };
 
-const Actions = () => {
+const Actions = ({
+  onClickPrimaryButton,
+  onClickSecondaryButton,
+  onClickUndoButton,
+}) => {
   return (
     <div className="container">
       <div className="left-buttons">
-        <Undo />
-        <Delete />
+        <Undo data-testid="undo-button" onClick={onClickUndoButton} />
+        <SecondaryButton
+          data-testid="delete-button"
+          onClick={onClickSecondaryButton}
+        />
       </div>
-      <Add />
+      <PrimaryButton
+        data-testid="add-button-card"
+        onClick={onClickPrimaryButton}
+      />
     </div>
   );
 };

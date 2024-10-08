@@ -8,9 +8,9 @@ export const Title = ({ children }) => {
   );
 };
 
-export const BodyText = ({ children }) => {
+export const BodyText = ({ children, ...props }) => {
   return (
-    <p data-testid="body" className={styles.body}>
+    <p className={styles.body} {...props}>
       {children}
     </p>
   );

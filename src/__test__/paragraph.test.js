@@ -11,7 +11,9 @@ describe("Paragraph components", () => {
   });
 
   it("renders Body text correctly", () => {
-    const { getByTestId } = render(<BodyText>Body</BodyText>);
+    const { getByTestId } = render(
+      <BodyText data-testid="body">Body</BodyText>
+    );
 
     expect(getByTestId("body")).toBeInTheDocument();
   });

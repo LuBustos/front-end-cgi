@@ -7,8 +7,8 @@ describe("Actions component", () => {
   it("renders all buttons correctly", () => {
     const { getByTestId } = render(<Actions />);
 
-    expect(getByTestId("primary-button")).toBeInTheDocument();
-    expect(getByTestId("secondary-button")).toBeInTheDocument();
+    expect(getByTestId("add-button-card")).toBeInTheDocument();
+    expect(getByTestId("delete-button")).toBeInTheDocument();
     expect(getByTestId("undo-button")).toBeInTheDocument();
   });
 });
