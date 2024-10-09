@@ -33,3 +33,7 @@
   background: #324bff 0% 0% no-repeat padding-box;
   color: #ffffff;
 }
+
+.container-list {
+  padding: 0px;
+}

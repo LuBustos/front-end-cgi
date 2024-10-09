@@ -1,8 +1,8 @@
-import styles from "./text.module.css";
+import "./text.css";
 
 export const Title = ({ children }) => {
   return (
-    <p data-testid="title" className={styles.title}>
+    <p data-testid="title" className={"title"}>
       {children}
     </p>
   );
@@ -10,7 +10,7 @@ export const Title = ({ children }) => {
 
 export const BodyText = ({ children, ...props }) => {
   return (
-    <p className={styles.body} {...props}>
+    <p className={"body"} {...props}>
       {children}
     </p>
   );

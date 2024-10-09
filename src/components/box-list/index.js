@@ -8,8 +8,8 @@ const BoxList = ({
 }) => {
   return (
     <div className="box">
-      <ul style={{ padding: "0px" }}>
-        {list.map((item) => {
+      <ul className="container-list">
+        {list.map((item, index) => {
           return (
             <li
               className={`item-base ${
@@ -18,6 +18,7 @@ const BoxList = ({
               onClick={() => handleSelectedItems(item.id)}
               onDoubleClick={() => handleDeleteOneItem(item.id)}
               key={item.id}
+              data-testid={`item-${index}`}
             >
               {item.value}
             </li>

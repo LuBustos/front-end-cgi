@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vanilla Project</title>
+    <link rel="stylesheet" href="../src/components/container/card.module.css" />
+    <link rel="stylesheet" href="../src/components/paragraph/text.css" />
+    <link rel="stylesheet" href="../src/components/input/input.css" />
+    <link rel="stylesheet" href="../src/components/buttons/button.css" />
+    <link rel="stylesheet" href="../src/components/box-list/box.css" />
+    <link rel="stylesheet" href="../src/components/modal/modal.css" />
+    <link rel="stylesheet" href="../src/App.css" />
+    <link rel="stylesheet" href="../src/index.css" />
+  </head>
+  <body>
+    <div class="App">
+      <div class="container">
+        <div data-testid="card" class="card">
+          <p class="title">This is a technical proof</p>
+          <p class="body">
+            Lorem ipsum dolor sit amet consectetur adipiscing, elit mus primis
+            nec inceptos. Lacinia habitasse arcu molestie maecenas cursus quam
+            nunc, hendrerit posuere augue fames dictumst placerat porttitor, dis
+            mi pharetra vestibulum venenatis phasellus.
+          </p>
+
+          <div class="box">
+            <ul class="container-list" id="itemList">
+              <li id="1" class="item-base item" onclick="selectItems(event) ">
+                Item 1
+              </li>
+              <li
+                id="2"
+                class="item-base item"
+                onclick="selectItems(event)"
+                ondblclick="deleteOnlyOneItem(event)"
+              >
+                Item 2
+              </li>
+              <li
+                id="3"
+                class="item-base item"
+                onclick="selectItems(event)"
+                ondblclick="deleteOnlyOneItem(event)"
+              >
+                Item 3
+              </li>
+              <li
+                id="4"
+                class="item-base item"
+                onclick="selectItems(event)"
+                ondblclick="deleteOnlyOneItem(event)"
+              >
+                Item 4
+              </li>
+            </ul>
+          </div>
+
+          <div class="buttons-container">
+            <div class="left-buttons">
+              <button class="btn undo" onclick="undoAction()">Undo</button>
+              <button class="btn secondary" onclick="deleteItem()">
+                Delete
+              </button>
+            </div>
+            <button class="btn primary" onclick="openModal()">Add</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="modal" class="modal" style="display: none">
+        <div class="modal-content">
+          <div class="modal-text">
+            <p class="body">Add item to list</p>
+          </div>
+          <div>
+            <input
+              type="text"
+              id="inputField"
+              placeholder="Type the text here..."
+              class="input"
+            />
+          </div>
+          <div class="modal-actions">
+            <button class="btn primary" onclick="addNewItem()">Add</button>
+            <button class="btn secondary" onclick="closeModal()">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      /* I need to add the timer, because there is a conflict between onclick and ondbclick*/
+      let timer = null;
+      const undoActions = [];
+
+      function openModal() {
+        document.getElementById("modal").style.display = "flex";
+      }
+
+      function closeModal() {
+        document.getElementById("modal").style.display = "none";
+      }
+
+      function selectItems(event) {
+        if (timer) clearTimeout(timer);
+        timer = setTimeout(function () {
+          const liId = event.target.id;
+          const liIdElement = document.getElementById(liId);
+
+          if (liIdElement.classList.contains("selected")) {
+            liIdElement.classList.replace("selected", "item");
+          } else {
+            liIdElement.classList.replace("item", "selected");
+          }
+        }, 100);
+      }
+
+      function addNewItem() {
+        const inputValue = document.getElementById("inputField").value;
+
+        if (!inputValue) {
+          alert("Please enter a value");
+          return;
+        }
+
+        const itemId = Math.floor(Math.random() * 10000);
+        const newLiItem = document.createElement("li");
+
+        newLiItem.textContent = inputValue;
+        newLiItem.id = itemId;
+        newLiItem.classList.add("item-base");
+        newLiItem.classList.add("item");
+        newLiItem.onclick = (event) => selectItems(event);
+        newLiItem.ondblclick = (event) => deleteOnlyOneItem(event);
+
+        undoActions.push({ state: "ADD", item: newLiItem });
+
+        document.getElementById("itemList").appendChild(newLiItem);
+        document.getElementById("inputField").value = "";
+        closeModal();
+      }
+
+      function deleteItem() {
+        const selectedItems = document.querySelectorAll("li.selected");
+        for (let i = 0; i < selectedItems.length; i++) {
+          undoActions.push({ state: "DELETE", item: selectedItems[i] });
+
+          selectedItems[i].parentNode.removeChild(selectedItems[i]);
+        }
+      }
+
+      function deleteOnlyOneItem(event) {
+        clearTimeout(timer);
+        const liId = event.target.id;
+        const liIdElement = document.getElementById(liId);
+
+        undoActions.push({ state: "DELETE", item: liIdElement });
+        liIdElement.parentNode.removeChild(liIdElement);
+      }
+
+      function undoAction() {
+        const lastElement = undoActions.pop();
+        if (lastElement) {
+          if (lastElement.state === "ADD") {
+            lastElement.item.parentNode.removeChild(lastElement.item);
+          }
+
+          if (lastElement.state === "DELETE") {
+            document.getElementById("itemList").appendChild(lastElement.item);
+          }
+        }
+      }
+    </script>
+  </body>
+</html>

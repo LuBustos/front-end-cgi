@@ -30,7 +30,7 @@ const Actions = ({
   onClickUndoButton,
 }) => {
   return (
-    <div className="container">
+    <div className="buttons-container">
       <div className="left-buttons">
         <Undo data-testid="undo-button" onClick={onClickUndoButton} />
         <SecondaryButton
